@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>学生班级查询系统</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; text-align: center; }
+        .query-box { background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        input { padding: 8px; width: 100%; box-sizing: border-box; margin: 10px 0; }
+        button { background: #4CAF50; color: white; padding: 10px; border: none; width: 100%; cursor: pointer; }
+        #result { margin-top: 20px; padding: 10px; min-height: 50px; border: 1px dashed #ccc; }
+    </style>
+</head>
+<body>
+    <h1>学生班级查询系统</h1>
+    <div class="query-box">
+        <label for="idNumber">请输入身份证号码：</label>
+        <input type="text" id="idNumber" placeholder="请输入18位身份证号码">
+        <button onclick="queryClass()">查询班级</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let studentData = {};
+        
+        // 加载CSV数据
+        fetch('student_data.csv')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                lines.forEach(line => {
+                    const [id, cls] = line.split(',');
+                    if(id && cls) {
+                        studentData[id.trim()] = cls.trim();
+                    }
+                });
+            });
+        
+        function queryClass() {
+            const idNumber = document.getElementById('idNumber').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!idNumber) {
+                resultDiv.textContent = "";
+                resultDiv.style.backgroundColor = "transparent";
+                return;
+            }
+            
+            if (studentData[idNumber]) {
+                resultDiv.textContent = `查询结果：${studentData[idNumber]}`;
+                resultDiv.style.backgroundColor = "#e8f5e9";
+            } else {
+                resultDiv.textContent = "未找到匹配的班级信息，请检查身份证号码是否正确";
+                resultDiv.style.backgroundColor = "#ffebee";
+            }
+        }
+        
+        // 按回车键也可查询
+        document.getElementById('idNumber').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                queryClass();
+            }
+        });
+    </script>
+</body>
+</html>
