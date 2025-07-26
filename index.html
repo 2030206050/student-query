@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生信息查询系统</title>
     <style>
         body {
@@ -16,7 +16,6 @@
             color: #333;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 1.5rem;
         }
         .search-box {
             background-color: white;
@@ -41,7 +40,6 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            width: 100%;
         }
         button:hover {
             background-color: #45a049;
@@ -52,19 +50,15 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: none;
-            overflow-x: auto;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
-            word-wrap: break-word;
         }
         th, td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
-            word-break: break-all;
         }
         th {
             background-color: #f2f2f2;
@@ -72,34 +66,6 @@
         .error {
             color: red;
             margin-top: 10px;
-        }
-
-        /* 移动端响应式调整 */
-        @media screen and (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-        
-            h1 {
-                font-size: 1.3rem;
-                margin-bottom: 20px;
-            }
-            
-            .search-box, .result {
-                padding: 15px;
-            }
-            
-            th, td {
-                padding: 8px;
-                font-size: 14px;
-            }
-            
-            /* 表格列宽调整 */
-            th:nth-child(1), td:nth-child(1) { width: 20%; }
-            th:nth-child(2), td:nth-child(2) { width: 30%; }
-            th:nth-child(3), td:nth-child(3) { width: 15%; }
-            th:nth-child(4), td:nth-child(4) { width: 17.5%; }
-            th:nth-child(5), td:nth-child(5) { width: 17.5%; }
         }
     </style>
 </head>
