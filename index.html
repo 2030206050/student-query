@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>学生班级查询系统</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; text-align: center; }
+        .query-box { background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        input { padding: 8px; width: 100%; box-sizing: border-box; margin: 10px 0; }
+        button { background: #4CAF50; color: white; padding: 10px; border: none; width: 100%; cursor: pointer; }
+        #result { margin-top: 20px; padding: 10px; min-height: 50px; border: 1px dashed #ccc; }
+    </style>
+</head>
+<body>
+    <h1>学生班级查询系统</h1>
+    <div class="query-box">
+        <label for="idNumber">请输入身份证号码：</label>
+        <input type="text" id="idNumber" placeholder="请输入18位身份证号码">
+        <button onclick="queryClass()">查询</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let studentRecords = []; // 存储所有学生记录
+        
+        // 加载CSV数据
+        fetch('student_data.csv')
+            .then(response => response.text())
+            .then(data => {
+                // 跳过CSV标题行（如果有）
+                const lines = data.split('\n').slice(1);
+                
+                lines.forEach(line => {
+                    const [name, id, cls] = line.split(',');
+                    if(id && cls) {
+                        studentRecords.push({
+                            name: name.trim(),
+                            id: id.trim(),
+                            class: cls.trim()
+                        });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('加载数据失败:', error);
+                document.getElementById('result').textContent = "系统初始化失败，请联系管理员";
+            });
+        
+        function queryClass() {
+            const idNumber = document.getElementById('idNumber').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            // 清空之前的结果
+            resultDiv.textContent = "";
+            resultDiv.style.backgroundColor = "transparent";
+            
+            if (!idNumber) {
+                return; // 未输入时不显示任何信息
+            }
+            
+            // 查找匹配的学生记录
+            const student = studentRecords.find(s => s.id === idNumber);
+            
+            if (student) {
+                resultDiv.innerHTML = `
+                    <p><strong>姓名：</strong>${student.name}</p>
+                    <p><strong>班级：</strong>${student.class}</p>
+                `;
+                resultDiv.style.backgroundColor = "#e8f5e9";
+            } else {
+                resultDiv.textContent = "未找到匹配的学生信息，请检查身份证号码是否正确";
+                resultDiv.style.backgroundColor = "#ffebee";
+            }
+        }
+        
+        // 按回车键触发查询
+        document.getElementById('idNumber').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                queryClass();
+            }
+        });
+    </script>
+</body>
+</html>
